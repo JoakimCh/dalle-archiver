@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import * as fs from 'node:fs'
 import * as fsAsync from 'node:fs/promises'
-import {ChromeDevToolsProtocol, initChrome} from './jlc-cdp.js'
-import {EventStreamParser} from './eventStreamParser.js'
+import {ChromeDevToolsProtocol, initChrome} from 'jlc-cdp'
+import {EventStreamParser} from 'tiny-event-stream-parser'
 import * as n_path from 'node:path'
 // import {version} from './package.json' assert {type: 'json'}
 import {createRequire} from 'module'

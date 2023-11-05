@@ -1,0 +1,21 @@
+{
+  "type": "module",
+  "name": "dalle-archiver",
+  "version": "0.9.0",
+  "author": "Joakim L. Christiansen (https://joakimch.github.io)",
+  "license": "MIT",
+  "bin": "./dalle-archiver.js",
+  "repository": "github:JoakimCh/dalle-archiver",
+  "funding": "https://joakimch.github.io/funding.html",
+  "description": "A cross platform archiver for OpenAI's DALL·E (for now it only supports DALL·E through ChatGPT).",
+  "keywords": [
+    "OpenAI",
+    "DALL-E",
+    "ChatGPT",
+    "archiver"
+  ],
+  "dependencies": {
+    "jlc-cdp": "^0.9.0",
+    "tiny-event-stream-parser": "^0.9.0"
+  }
+}

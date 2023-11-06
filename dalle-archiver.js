@@ -130,7 +130,7 @@ function pickPathThatExists(choices) {
   for (let path of choices) {
     if (process.platform == 'win32') {
       // thanks to: https://stackoverflow.com/a/33017068/4216153
-      path = path.replace(/%([^%]+)%/g, (_, key) => process.env[key])
+      path = path.replace(/%([^%]+)%/g, (_, key) => process.env[key]).replaceAll('\\', '/')
     }
     if (fs.existsSync(path)) {
       return path

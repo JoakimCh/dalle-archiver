@@ -128,6 +128,10 @@ async function startIntercept() {
 
 function pickPathThatExists(choices) {
   for (const path of choices) {
+    if (process.platform == 'win32') {
+      // thanks to: https://stackoverflow.com/a/33017068/4216153
+      path = path.replace(/%([^%]+)%/g, (_, key) => process.env[key])
+    }
     if (fs.existsSync(path)) {
       return path
     }
@@ -145,7 +149,7 @@ function loadConfig(cfgPath = 'config.json') {
       cfg.archivePath = cfg.archivePath.slice(0, -1)
     }
     if (!n_path.isAbsolute(cfg.archivePath)) throw Error('The archivePath must be absolute, not this relative path: '+cfg.archivePath)
-    cfg.archivePath = cfg.archivePath.replaceAll('\\', '/') // (Windows is fine with / as long as we don't mix them)
+    cfg.archivePath = cfg.archivePath.replaceAll('\\', '/') // (Windows is FINE with /, we can even mix them)
   } catch (error) {
     log('No valid config.json found, creating one with default values. Please check it before running me again! The error message was:', error.message)
     try {
@@ -157,15 +161,15 @@ function loadConfig(cfgPath = 'config.json') {
               return 'google-chrome'
             case 'win32':
               return pickPathThatExists([
-                '%ProgramFiles%\\Google\\Chrome\\Application\\chrome.exe',
-                '%ProgramFiles(x86)%\\Google\\Chrome\\Application\\chrome.exe',
-                '%LocalAppData%\\Google\\Chrome\\Application\\chrome.exe'
-              ]) || 'c:\\path\\to\\chromium-compatible-browser.exe'
+                '%ProgramFiles%/Google/Chrome/Application/chrome.exe',
+                '%ProgramFiles(x86)%/Google/Chrome/Application/chrome.exe',
+                '%LocalAppData%/Google/Chrome/Application/chrome.exe'
+              ]) || 'c:/path/to/chromium-compatible-browser.exe'
             case 'darwin':
               return pickPathThatExists(['~/Library/Application Support/Google/Chrome']) || '/path/to/chromium-compatible-browser'
           }
         })(),
-        archivePath: process.cwd()
+        archivePath: process.platform == 'win32' ? process.cwd().replaceAll('\\', '/') : process.cwd()
       }
       ensureDirectory(cfgPath)
       fs.writeFileSync(cfgPath, JSON.stringify(cfg, null, 2))
